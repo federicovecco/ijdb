@@ -24,10 +24,20 @@ function insertJoke($pdo, $jokeText, $authorId) {
 	query($pdo, $query, $parameters);	
 }
 
-function updateJoke($pdo, $jokeId, $joketext, $authorId) {
-	$query = 'UPDATE `joke` SET `authorId` = :authorId, `joketext` = :joketext WHERE `id` = :id';
-	$parameters = [':joketext' => $joketext, 'authorId' => $authorId, ':id' => $jokeId];
-	query($pdo, $query, $parameters);
+function updateJoke($pdo, $fields) {
+	$query = 'UPDATE `joke` SET ';
+
+	foreach ($array as $key => $value) {
+		$query .= '`' . $key . '` = :' . $key . ','
+	}
+
+	$query = rtrim($query, ',');
+
+	$query .= ' WHERE `id` = :primaryKey';
+
+	fields['primaryKey'] = fields['id'];
+
+	query($pdo, $query, $fields);
 }
 
 function deleteJoke($pdo, $id) {
