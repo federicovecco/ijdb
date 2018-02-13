@@ -28,14 +28,14 @@ function updateJoke($pdo, $fields) {
 	$query = 'UPDATE `joke` SET ';
 
 	foreach ($array as $key => $value) {
-		$query .= '`' . $key . '` = :' . $key . ','
+		$query .= '`' . $key . '` = :' . $key . ',';
 	}
 
 	$query = rtrim($query, ',');
 
 	$query .= ' WHERE `id` = :primaryKey';
 
-	fields['primaryKey'] = fields['id'];
+	$fields['primaryKey'] = $fields['id'];
 
 	query($pdo, $query, $fields);
 }

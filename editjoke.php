@@ -6,10 +6,11 @@ include __DIR__ . '/includes/DatabaseFunctions.php';
 try {
 	if (isset($_POST['joketext'])) {
 
-		$fields = ['id' => $_POST['jokeId'],
+		$param = ['id' => $_POST['jokeId'],
 					'joketext' => $_POST['joketext'],
 					'authorid' => 1];
-		updateJoke($pdo, $fields);
+
+		updateJoke($pdo, $param);
 
 		header('location: jokes.php');
 	} else {
