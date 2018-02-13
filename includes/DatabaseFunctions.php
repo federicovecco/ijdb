@@ -66,7 +66,7 @@ function deleteJoke($pdo, $id) {
 }
 
 function allJokes($pdo) {
-	$jokes = query($pdo, 'SELECT `joke`.`id`, `joketext`, `name`, `email` FROM `joke` INNER JOIN `author`
+	$jokes = query($pdo, 'SELECT `joke`.`id`, `joketext`, `jokedate`, `name`, `email` FROM `joke` INNER JOIN `author`
 		ON `authorid` = `author`.`id`');
 
 	return $jokes->fetchAll();
