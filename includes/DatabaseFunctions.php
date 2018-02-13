@@ -37,13 +37,15 @@ function insertJoke($pdo, $fields) {
 
 	$query .= ')';
 
-	query($pdo, $query);	
+	$fields = processDates($fields);
+
+	query($pdo, $query, $fields);	
 }
 
 function updateJoke($pdo, $fields) {
 	$query = 'UPDATE `joke` SET ';
 
-	foreach ($array as $key => $value) {
+	foreach ($fields as $key => $value) {
 		$query .= '`' . $key . '` = :' . $key . ',';
 	}
 
@@ -52,6 +54,8 @@ function updateJoke($pdo, $fields) {
 	$query .= ' WHERE `id` = :primaryKey';
 
 	$fields['primaryKey'] = $fields['id'];
+
+	$fields = processDates($fields);
 
 	query($pdo, $query, $fields);
 }
@@ -66,5 +70,15 @@ function allJokes($pdo) {
 		ON `authorid` = `author`.`id`');
 
 	return $jokes->fetchAll();
+}
+
+function processDates($fields) {
+	foreach ($fields as $key => $value) {
+		if($value instanceof DateTime) {
+			$fields[$key] = $value->format('Y-m-d');
+		}
+	}
+
+	return $fields;
 }
 ?>

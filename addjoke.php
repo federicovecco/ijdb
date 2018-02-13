@@ -7,7 +7,8 @@ if(isset($_POST['joketext'])) {
 		include __DIR__ . '/includes/DatabaseFunctions.php';
 
 		$param = ['authorid' => 1,
-					'joketext' => $_POST['joketext']];
+					'joketext' => $_POST['joketext'],
+					'jokedate' => new DateTime() ];
 		insertJoke($pdo, $param);
 		
 		header('location: jokes.php');
