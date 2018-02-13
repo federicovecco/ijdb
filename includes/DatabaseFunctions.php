@@ -18,10 +18,26 @@ function getJoke($pdo, $id) {
 	return $query->fetch();
 }
 
-function insertJoke($pdo, $jokeText, $authorId) {
-	$query = 'INSERT INTO `joke` (`joketext`, `jokedate`, `authorId`) VALUES (:joketext, CURDATE(), :authorId)';
-	$parameters = [':joketext' => $jokeText, ':authorId' => $authorId];
-	query($pdo, $query, $parameters);	
+function insertJoke($pdo, $fields) {
+	$query = 'INSERT INTO `joke` (';
+
+	foreach($fields as $key => $value) {
+		$query .= '`' . $key . '`,';
+	}
+	
+	$query = rtrim($query, ',');
+
+	$query .= ') VALUES (';
+
+	foreach($fields as $key => $value) {
+		$query .= ':' . $key . ',';
+	}
+
+	$query = rtrim($query, ',');
+
+	$query .= ')';
+
+	query($pdo, $query);	
 }
 
 function updateJoke($pdo, $fields) {
