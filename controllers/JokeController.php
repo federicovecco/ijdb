@@ -16,7 +16,7 @@ class JokeController
 		$jokes = [];
 		foreach ($result as $joke) {
 			$author =
-			$this->authorsTable->findById($joke['authorId']);
+			$this->authorsTable->findById($joke['authorid']);
 			$jokes[] = [
 			'id' => $joke['id'],
 			'joketext' => $joke['joketext'],
@@ -27,21 +27,23 @@ class JokeController
 		}
 		$title = 'Joke list';
 		$totalJokes = $this->jokesTable->total();
-		ob_start();
-		include __DIR__ . '/../tmp/jokes.html.php';
-		$output = ob_get_clean();
+		
+		return ['template' => 'jokes.html.php',
+				 'title' => $title,
+				 'variables' => ['totalJokes' => $totalJokes,
+				 				 'jokes' => $jokes]
+				];
 	}
 
 	public function home() {
 		$title = 'Internet Joke Database';
-		ob_start();
-		include __DIR__ . '/../tmp/home.html.php';
-		$output = ob_get_clean();
+		
+		return ['template' => 'home.html.php', 'title' => $title];
 	}
 
 	public function delete() {
 		$this->jokesTable->delete($_POST['id']);
-		header('location: jokes.php');
+		header('location: index.php?action=list');
 	}
 
 	public function edit() {
@@ -50,16 +52,18 @@ class JokeController
 			$joke['jokedate'] = new DateTime();
 			$joke['authorId'] = 1;
 			$this->jokesTable->save($joke);
-			header('location: jokes.php');
+			header('location: index.php?action=list');
 		}
 		else {
 			if (isset($_GET['id'])) {
 				$joke = $this->jokesTable->findById($_GET['id']);
 			}
 			$title = 'Edit joke';
-			ob_start();
-			include __DIR__ . '/../templates/editjoke.html.php';
-			$output = ob_get_clean();
+			
+			return ['template' => 'editjoke.html.php',
+					 'title' => $title,
+					 'variables' => ['joke' => $joke ?? null]
+					];
 		}
 	}
 

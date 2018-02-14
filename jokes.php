@@ -12,7 +12,7 @@ try {
 	$jokes = [];
 
 	foreach ($result as $joke) {
-		$author = $authorsTable->findById($joke['authorId']);
+		$author = $authorsTable->findById($joke['authorid']);
 		$jokes[] = [
 		'id' => $joke['id'],
 		'joketext' => $joke['joketext'],
